@@ -32,6 +32,7 @@ const server = http.createServer(app);
 // INICIALIZAR FIREBASE ADMIN
 // =====================================================
 const admin = require('firebase-admin');
+let firebaseInitialized = false;
 
 try {
     // Tenta inicializar com a variável de ambiente se existir
@@ -40,19 +41,24 @@ try {
         admin.initializeApp({
             credential: admin.credential.cert(serviceAccount)
         });
+        firebaseInitialized = true;
         console.log('✅ Firebase Admin inicializado com conta de serviço');
-    } else {
-        // Tenta inicializar com credenciais padrão (útil localmente se houver GOOGLE_APPLICATION_CREDENTIALS)
+    } else if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+        // Tenta inicializar com credenciais padrão do Google
         admin.initializeApp();
+        firebaseInitialized = true;
         console.log('✅ Firebase Admin inicializado com credenciais padrão');
+    } else {
+        console.warn('⚠️ Firebase Admin não configurado - Login com Google via backend desabilitado');
+        console.warn('⚠️ Para habilitar, configure FIREBASE_SERVICE_ACCOUNT no ambiente');
     }
 } catch (error) {
     if (error.code === 'app/already-exists') {
+        firebaseInitialized = true;
         console.log('ℹ️ Firebase Admin já estava inicializado');
     } else {
         console.warn('⚠️ Erro ao inicializar Firebase Admin:', error.message);
-        console.warn('⚠️ Autenticação via Google pode não funcionar corretamente no backend.');
-        console.warn('⚠️ Certifique-se de configurar FIREBASE_SERVICE_ACCOUNT no .env');
+        console.warn('⚠️ Login com Google via backend não funcionará');
     }
 }
 
