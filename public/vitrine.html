@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vitrine - MDA Vendas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <!-- Background -->
+    <div class="space-background">
+        <div class="stars stars-layer-1"></div>
+        <div class="stars stars-layer-2"></div>
+        <div class="nebula nebula-1"></div>
+        <div class="moon"></div>
+    </div>
+
+    <div class="main-container">
+        <!-- Navbar -->
+        <nav class="navbar">
+            <a href="/" class="logo" style="text-decoration:none;">🚀 MDA Vendas</a>
+            <div style="display:flex;gap:1rem;align-items:center;">
+                <a href="/dashboard" class="btn btn-secondary" style="text-decoration:none;">📊 Dashboard</a>
+                <a href="/" class="btn btn-primary" style="text-decoration:none;">Criar Conta</a>
+            </div>
+        </nav>
+
+        <!-- Header -->
+        <section style="padding:6rem 2rem 2rem;max-width:1400px;margin:0 auto;">
+            <div style="text-align:center;margin-bottom:3rem;">
+                <h1 style="font-size:2.5rem;font-weight:700;margin-bottom:1rem;">
+                    ⭐ Vitrine de Produtos Digitais
+                </h1>
+                <p style="color:#94a3b8;max-width:600px;margin:0 auto;">
+                    Encontre os melhores produtos digitais. Cursos, e-books, mentorias e muito mais!
+                </p>
+            </div>
+
+            <!-- Filtros -->
+            <div style="display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:2rem;justify-content:center;">
+                <input type="text" id="busca" class="form-input" style="max-width:300px;"
+                    placeholder="🔍 Buscar produtos..." onkeyup="buscar()">
+                <select id="nicho" class="form-input" style="width:auto;" onchange="carregarProdutos()">
+                    <option value="">Todos os nichos</option>
+                    <option value="Curso Online">Cursos</option>
+                    <option value="E-book">E-books</option>
+                    <option value="Mentoria">Mentorias</option>
+                    <option value="Consultoria">Consultoria</option>
+                    <option value="Aplicativo/Software">Software</option>
+                    <option value="PLR">PLR</option>
+                    <option value="Templates Gráficos">Templates</option>
+                    <option value="Ferramentas SaaS">SaaS</option>
+                    <option value="Outros">Outros</option>
+                </select>
+                <select id="ordem" class="form-input" style="width:auto;" onchange="carregarProdutos()">
+                    <option value="">Mais recentes</option>
+                    <option value="vendas">Mais vendidos</option>
+                    <option value="preco_asc">Menor preço</option>
+                    <option value="preco_desc">Maior preço</option>
+                </select>
+            </div>
+
+            <!-- Grid de Produtos -->
+            <div id="produtos-grid" class="vitrine-grid"></div>
+            <p id="vazio" style="text-align:center;color:#64748b;padding:4rem;display:none;">
+                Nenhum produto encontrado. Tente outra busca ou filtro.
+            </p>
+
+            <!-- Paginação -->
+            <div id="paginacao" style="display:flex;justify-content:center;gap:0.5rem;margin-top:2rem;"></div>
+        </section>
+
+        <!-- Footer -->
+        <footer style="padding:3rem 2rem;border-top:1px solid rgba(255,255,255,0.1);text-align:center;">
+            <div class="logo" style="margin-bottom:1rem;">🚀 MDA Vendas</div>
+            <p style="color:#64748b;">© 2024 MDA Vendas. Todos os direitos reservados.</p>
+        </footer>
+    </div>
+
+    <!-- Modal Ver Produto -->
+    <div id="modal-produto" class="modal-overlay" style="display:none;">
+        <div class="modal" style="max-width:600px;">
+            <div class="modal-header">
+                <h2 id="prod-nome">Produto</h2>
+                <button class="modal-close" onclick="fecharModal()">×</button>
+            </div>
+            <div style="text-align:center;">
+                <img id="prod-img" src="" style="max-width:100%;max-height:200px;border-radius:10px;margin-bottom:1rem;"
+                    onerror="this.style.display='none'">
+            </div>
+            <p id="prod-desc" style="color:#94a3b8;margin-bottom:1.5rem;"></p>
+            <div style="display:grid;gap:0.75rem;margin-bottom:1.5rem;">
+                <p><strong>💰 Preço:</strong> <span id="prod-preco"
+                        style="color:#10b981;font-size:1.75rem;font-weight:700;">R$ 0</span></p>
+                <p><strong>📁 Nicho:</strong> <span id="prod-nicho"></span></p>
+                <p><strong>👤 Vendedor:</strong> <span id="prod-dono"></span></p>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">🔗 Link do Produto</label>
+                <div style="display:flex;gap:0.5rem;">
+                    <input type="text" class="form-input" id="prod-link" readonly>
+                    <button class="btn btn-primary" onclick="copiar('prod-link')">Copiar</button>
+                </div>
+            </div>
+
+            <div id="afiliado-section" style="display:none;">
+                <div class="form-group">
+                    <label class="form-label">🤝 Link de Afiliado</label>
+                    <div style="display:flex;gap:0.5rem;">
+                        <input type="text" class="form-input" id="prod-afiliado" readonly>
+                        <button class="btn btn-secondary" onclick="copiar('prod-afiliado')">Copiar</button>
+                    </div>
+                    <small style="color:#10b981;">Comissão: <span id="prod-comissao">30</span>%</small>
+                </div>
+            </div>
+
+            <a id="prod-acessar" href="#" target="_blank" class="btn btn-success"
+                style="width:100%;margin-top:1rem;text-decoration:none;font-size:1.1rem;">
+                🛒 Acessar Produto →
+            </a>
+        </div>
+    </div>
+
+    <div id="toast-container" class="toast-container"></div>
+
+    <script>
+        let produtosCache = [];
+        let paginaAtual = 1;
+
+        window.onload = () => carregarProdutos();
+
+        async function carregarProdutos() {
+            const nicho = document.getElementById('nicho').value;
+            const ordem = document.getElementById('ordem').value;
+
+            try {
+                const res = await fetch(`/api/vitrine?nicho=${nicho}&ordem=${ordem}&pagina=${paginaAtual}&limite=20`);
+                const data = await res.json();
+
+                if (data.success) {
+                    produtosCache = data.produtos;
+                    renderizarProdutos(data.produtos);
+                    renderizarPaginacao(data.paginas, data.pagina_atual);
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        function renderizarProdutos(produtos) {
+            const grid = document.getElementById('produtos-grid');
+            const vazio = document.getElementById('vazio');
+
+            if (produtos.length === 0) {
+                grid.innerHTML = '';
+                vazio.style.display = 'block';
+                return;
+            }
+
+            vazio.style.display = 'none';
+            grid.innerHTML = produtos.map(p => `
+                <div class="produto-card" onclick="verProduto('${p._id}')" style="cursor:pointer;">
+                    <img src="${p.imagem_capa || 'https://via.placeholder.com/300x180/1a1a3e/3b82f6?text=Produto+Digital'}" 
+                         alt="${p.nome}" 
+                         onerror="this.src='https://via.placeholder.com/300x180/1a1a3e/3b82f6?text=Produto+Digital'">
+                    <div class="produto-card-body">
+                        <span class="badge badge-info" style="margin-bottom:0.5rem;">${p.nicho}</span>
+                        <h3 class="produto-card-title">${p.nome}</h3>
+                        <div class="produto-card-preco">R$ ${p.preco.toFixed(2)}</div>
+                        <p style="font-size:0.8rem;color:#64748b;margin-top:0.5rem;">
+                            👤 ${p.dono?.nome || 'Vendedor'}
+                        </p>
+                        ${p.afiliados_habilitado ? '<span class="badge badge-success" style="margin-top:0.5rem;">🤝 Aceita Afiliados</span>' : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderizarPaginacao(totalPaginas, atual) {
+            const container = document.getElementById('paginacao');
+            if (totalPaginas <= 1) {
+                container.innerHTML = '';
+                return;
+            }
+
+            let html = '';
+            for (let i = 1; i <= totalPaginas; i++) {
+                html += `<button class="btn ${i === atual ? 'btn-primary' : 'btn-secondary'}" 
+                                 style="padding:0.5rem 1rem;" 
+                                 onclick="irPagina(${i})">${i}</button>`;
+            }
+            container.innerHTML = html;
+        }
+
+        function irPagina(p) {
+            paginaAtual = p;
+            carregarProdutos();
+            window.scrollTo(0, 0);
+        }
+
+        let timeoutBusca;
+        function buscar() {
+            clearTimeout(timeoutBusca);
+            timeoutBusca = setTimeout(() => {
+                const termo = document.getElementById('busca').value.toLowerCase();
+                const filtrados = produtosCache.filter(p =>
+                    p.nome.toLowerCase().includes(termo) ||
+                    (p.descricao && p.descricao.toLowerCase().includes(termo))
+                );
+                renderizarProdutos(filtrados);
+            }, 300);
+        }
+
+        async function verProduto(id) {
+            try {
+                const res = await fetch(`/api/vitrine/${id}`);
+                const data = await res.json();
+                if (!data.success) return;
+
+                const p = data.produto;
+                document.getElementById('prod-nome').textContent = p.nome;
+                document.getElementById('prod-img').src = p.imagem_capa || '';
+                document.getElementById('prod-img').style.display = p.imagem_capa ? 'block' : 'none';
+                document.getElementById('prod-desc').textContent = p.descricao || 'Sem descrição disponível.';
+                document.getElementById('prod-preco').textContent = `R$ ${p.preco.toFixed(2)}`;
+                document.getElementById('prod-nicho').textContent = p.nicho;
+                document.getElementById('prod-dono').textContent = p.dono?.nome || 'Vendedor';
+                document.getElementById('prod-link').value = p.link_produto;
+                document.getElementById('prod-acessar').href = p.link_produto;
+
+                if (p.afiliados_habilitado && p.link_afiliado) {
+                    document.getElementById('afiliado-section').style.display = 'block';
+                    document.getElementById('prod-afiliado').value = p.link_afiliado;
+                    document.getElementById('prod-comissao').textContent = p.comissao_afiliados || 30;
+                } else {
+                    document.getElementById('afiliado-section').style.display = 'none';
+                }
+
+                document.getElementById('modal-produto').style.display = 'flex';
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        function fecharModal() {
+            document.getElementById('modal-produto').style.display = 'none';
+        }
+
+        function copiar(id) {
+            const input = document.getElementById(id);
+            navigator.clipboard.writeText(input.value);
+            mostrarToast('📋 Link copiado!');
+        }
+
+        function mostrarToast(msg) {
+            const c = document.getElementById('toast-container');
+            const t = document.createElement('div');
+            t.className = 'toast toast-success';
+            t.textContent = msg;
+            c.appendChild(t);
+            setTimeout(() => t.remove(), 3000);
+        }
+
+        // Fechar modal ao clicar fora
+        document.getElementById('modal-produto').addEventListener('click', (e) => {
+            if (e.target.id === 'modal-produto') fecharModal();
+        });
+    </script>
+</body>
+
+</html>

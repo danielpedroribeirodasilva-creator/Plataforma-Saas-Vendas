@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - MDA Vendas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+</head>
+
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-logo">🛡️ MDA Admin</div>
+
+            <nav class="sidebar-menu">
+                <a href="#stats" class="sidebar-item active" onclick="mostrarSecao('stats')">
+                    <span class="icon">📊</span>
+                    <span>Estatísticas</span>
+                </a>
+                <a href="#usuarios" class="sidebar-item" onclick="mostrarSecao('usuarios')">
+                    <span class="icon">👥</span>
+                    <span>Usuários</span>
+                </a>
+                <a href="#pagamentos" class="sidebar-item" onclick="mostrarSecao('pagamentos')">
+                    <span class="icon">💰</span>
+                    <span>Pagamentos</span>
+                </a>
+                <a href="#feedbacks" class="sidebar-item" onclick="mostrarSecao('feedbacks')">
+                    <span class="icon">📝</span>
+                    <span>Feedbacks</span>
+                </a>
+
+                <div style="margin-top:auto;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.1);">
+                    <a href="/dashboard" class="sidebar-item">
+                        <span class="icon">👤</span>
+                        <span>Voltar ao Dashboard</span>
+                    </a>
+                </div>
+            </nav>
+
+            <div style="padding:1rem;border-top:1px solid rgba(255,255,255,0.1);">
+                <div style="display:flex;align-items:center;gap:0.75rem;">
+                    <div id="user-avatar"
+                        style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#ef4444,#dc2626);display:flex;align-items:center;justify-content:center;font-weight:600;">
+                        A</div>
+                    <div>
+                        <div id="user-name" style="font-weight:500;">Admin</div>
+                        <div id="user-cargo" style="font-size:0.75rem;color:#ef4444;">Admin</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <button class="hamburger" id="hamburger" onclick="toggleSidebar()">☰</button>
+
+        <!-- Main -->
+        <main class="main-content">
+
+            <!-- Stats -->
+            <section id="secao-stats" class="secao">
+                <div class="dashboard-header">
+                    <h1 style="font-size:1.75rem;font-weight:700;">📊 Estatísticas Gerais</h1>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="icon">👥</div>
+                        <div class="value" id="stat-usuarios">0</div>
+                        <div class="label">Total de Usuários</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon">✅</div>
+                        <div class="value" id="stat-ativos">0</div>
+                        <div class="label">Usuários com Plano</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon">📦</div>
+                        <div class="value" id="stat-produtos">0</div>
+                        <div class="label">Produtos Cadastrados</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon">💰</div>
+                        <div class="value" id="stat-receita">R$ 0</div>
+                        <div class="label">Receita Total</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Usuários -->
+            <section id="secao-usuarios" class="secao" style="display:none;">
+                <div class="dashboard-header">
+                    <h1 style="font-size:1.75rem;font-weight:700;">👥 Gerenciar Usuários</h1>
+                </div>
+
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Email</th>
+                                <th>Cargo</th>
+                                <th>Plano</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usuarios-lista"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Pagamentos -->
+            <section id="secao-pagamentos" class="secao" style="display:none;">
+                <div class="dashboard-header">
+                    <h1 style="font-size:1.75rem;font-weight:700;">💰 Pagamentos</h1>
+                </div>
+
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Usuário</th>
+                                <th>Plano</th>
+                                <th>Valor</th>
+                                <th>Status</th>
+                                <th>Data</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pagamentos-lista"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Feedbacks -->
+            <section id="secao-feedbacks" class="secao" style="display:none;">
+                <div class="dashboard-header">
+                    <h1 style="font-size:1.75rem;font-weight:700;">📝 Feedbacks</h1>
+                </div>
+                <div id="feedbacks-lista"></div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal Cargo -->
+    <div id="modal-cargo" class="modal-overlay" style="display:none;">
+        <div class="modal" style="max-width:400px;">
+            <div class="modal-header">
+                <h2>Alterar Cargo</h2>
+                <button class="modal-close" onclick="fecharModalCargo()">×</button>
+            </div>
+            <input type="hidden" id="cargo-user-id">
+            <p style="margin-bottom:1rem;">Usuário: <strong id="cargo-user-email"></strong></p>
+            <div class="form-group">
+                <label class="form-label">Novo Cargo</label>
+                <select id="cargo-novo" class="form-input">
+                    <option value="usuario">Usuário</option>
+                    <option value="adm_cuidador">ADM Cuidador</option>
+                    <option value="adm_completo">ADM Completo</option>
+                    <option value="sub_dono">Sub-Dono</option>
+                </select>
+            </div>
+            <button class="btn btn-primary" style="width:100%;" onclick="salvarCargo()">Salvar</button>
+        </div>
+    </div>
+
+    <div id="toast-container" class="toast-container"></div>
+    <div id="loading" class="loading-overlay" style="display:none;">
+        <div class="spinner"></div>
+    </div>
+
+    <script>
+        // Firebase
+        firebase.initializeApp({
+            apiKey: "AIzaSyDXl275mY4Aj0Cb_j1e8BYzLYJtTIMaeZY",
+            authDomain: "app-finance-ai.firebaseapp.com",
+            projectId: "app-finance-ai"
+        });
+
+        let token = localStorage.getItem('token');
+        let usuario = JSON.parse(localStorage.getItem('usuario') || 'null');
+
+        function mostrarToast(msg, tipo = 'info') {
+            const c = document.getElementById('toast-container');
+            const t = document.createElement('div');
+            t.className = `toast toast-${tipo}`;
+            t.innerHTML = msg;
+            c.appendChild(t);
+            setTimeout(() => t.remove(), 5000);
+        }
+
+        function mostrarLoading() { document.getElementById('loading').style.display = 'flex'; }
+        function esconderLoading() { document.getElementById('loading').style.display = 'none'; }
+
+        window.onload = async function () {
+            if (!token) {
+                window.location.href = '/';
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/auth/me', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+
+                if (!data.success || !data.usuario.isAdmin) {
+                    alert('Acesso negado! Apenas administradores.');
+                    window.location.href = '/dashboard';
+                    return;
+                }
+
+                usuario = data.usuario;
+                document.getElementById('user-name').textContent = usuario.nome || usuario.email.split('@')[0];
+                document.getElementById('user-cargo').textContent = usuario.cargo;
+                document.getElementById('user-avatar').textContent = (usuario.nome || usuario.email)[0].toUpperCase();
+
+                carregarStats();
+                carregarUsuarios();
+                carregarPagamentos();
+                carregarFeedbacks();
+            } catch (e) {
+                console.error(e);
+                window.location.href = '/';
+            }
+        };
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+
+        function mostrarSecao(secao) {
+            document.querySelectorAll('.secao').forEach(s => s.style.display = 'none');
+            document.getElementById(`secao-${secao}`).style.display = 'block';
+            document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+            event.target.closest('.sidebar-item').classList.add('active');
+            document.getElementById('sidebar').classList.remove('open');
+        }
+
+        async function carregarStats() {
+            try {
+                const res = await fetch('/api/admin/stats', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                if (data.success) {
+                    document.getElementById('stat-usuarios').textContent = data.stats.totalUsuarios;
+                    document.getElementById('stat-ativos').textContent = data.stats.usuariosAtivos;
+                    document.getElementById('stat-produtos').textContent = data.stats.totalProdutos;
+                    document.getElementById('stat-receita').textContent = `R$ ${data.stats.receitaTotal.toFixed(2)}`;
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        async function carregarUsuarios() {
+            try {
+                const res = await fetch('/api/admin/usuarios', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    const lista = document.getElementById('usuarios-lista');
+                    lista.innerHTML = data.usuarios.map(u => `
+                        <tr>
+                            <td>${u.nome || 'Sem nome'}</td>
+                            <td>${u.email}</td>
+                            <td><span class="badge ${u.cargo === 'dono' ? 'badge-danger' : u.cargo.includes('adm') ? 'badge-warning' : 'badge-info'}">${u.cargo}</span></td>
+                            <td>${u.plano_ativo?.tipo || '-'}</td>
+                            <td><span class="badge ${u.ativo ? 'badge-success' : 'badge-danger'}">${u.ativo ? 'Ativo' : 'Banido'}</span></td>
+                            <td>
+                                ${u.cargo !== 'dono' ? `
+                                    <button class="btn btn-secondary" style="padding:0.25rem 0.5rem;font-size:0.75rem;" onclick="abrirModalCargo('${u._id}', '${u.email}', '${u.cargo}')">Cargo</button>
+                                    <button class="btn ${u.ativo ? 'btn-secondary' : 'btn-primary'}" style="padding:0.25rem 0.5rem;font-size:0.75rem;margin-left:0.25rem;" onclick="toggleBan('${u._id}', ${u.ativo})">${u.ativo ? 'Banir' : 'Desbanir'}</button>
+                                ` : '<span style="color:#64748b;">Dono</span>'}
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        async function carregarPagamentos() {
+            try {
+                const res = await fetch('/api/admin/pagamentos', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    const lista = document.getElementById('pagamentos-lista');
+                    lista.innerHTML = data.pagamentos.map(p => `
+                        <tr>
+                            <td>${p.usuario?.email || 'N/A'}</td>
+                            <td>${p.plano}</td>
+                            <td style="color:#10b981;font-weight:600;">R$ ${p.valor.toFixed(2)}</td>
+                            <td><span class="badge ${p.status === 'aprovado' ? 'badge-success' : p.status === 'pendente' ? 'badge-warning' : 'badge-danger'}">${p.status}</span></td>
+                            <td>${new Date(p.criado_em).toLocaleDateString('pt-BR')}</td>
+                        </tr>
+                    `).join('');
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        async function carregarFeedbacks() {
+            try {
+                const res = await fetch('/api/admin/feedbacks', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    document.getElementById('feedbacks-lista').innerHTML = data.feedbacks.map(f => `
+                        <div class="card" style="margin-bottom:1rem;">
+                            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+                                <strong>${f.nome} ${f.email ? `(${f.email})` : ''}</strong>
+                                <span style="color:#f59e0b;">${'⭐'.repeat(f.rating)}</span>
+                            </div>
+                            <p style="color:#94a3b8;">${f.mensagem}</p>
+                            <small style="color:#64748b;">${new Date(f.criado_em).toLocaleDateString('pt-BR')}</small>
+                        </div>
+                    `).join('') || '<p style="text-align:center;color:#64748b;">Nenhum feedback</p>';
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        function abrirModalCargo(id, email, cargoAtual) {
+            document.getElementById('cargo-user-id').value = id;
+            document.getElementById('cargo-user-email').textContent = email;
+            document.getElementById('cargo-novo').value = cargoAtual;
+            document.getElementById('modal-cargo').style.display = 'flex';
+        }
+
+        function fecharModalCargo() {
+            document.getElementById('modal-cargo').style.display = 'none';
+        }
+
+        async function salvarCargo() {
+            const id = document.getElementById('cargo-user-id').value;
+            const cargo = document.getElementById('cargo-novo').value;
+
+            try {
+                mostrarLoading();
+                const res = await fetch(`/api/admin/usuarios/${id}/cargo`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ cargo })
+                });
+
+                const data = await res.json();
+                if (data.success) {
+                    mostrarToast('✅ Cargo alterado!', 'success');
+                    fecharModalCargo();
+                    carregarUsuarios();
+                } else {
+                    mostrarToast('❌ ' + data.message, 'error');
+                }
+            } catch (e) {
+                mostrarToast('❌ Erro', 'error');
+            } finally {
+                esconderLoading();
+            }
+        }
+
+        async function toggleBan(id, atualmenteAtivo) {
+            const acao = atualmenteAtivo ? 'banir' : 'desbanir';
+            if (!confirm(`Tem certeza que deseja ${acao} este usuário?`)) return;
+
+            try {
+                const res = await fetch(`/api/admin/usuarios/${id}/status`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ ativo: !atualmenteAtivo })
+                });
+
+                const data = await res.json();
+                if (data.success) {
+                    mostrarToast(`✅ Usuário ${atualmenteAtivo ? 'banido' : 'desbanido'}!`, 'success');
+                    carregarUsuarios();
+                }
+            } catch (e) {
+                mostrarToast('❌ Erro', 'error');
+            }
+        }
+    </script>
+</body>
+
+</html>

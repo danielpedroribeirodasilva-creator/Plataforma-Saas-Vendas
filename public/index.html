@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MDA Vendas - Plataforma brasileira inovadora para venda de produtos digitais com vitrine de afiliados e marketplace colaborativo">
+    <meta name="keywords" content="produtos digitais, afiliados, marketplace, vendas online, cursos, ebooks">
+    <title>MDA Vendas - Sua Vitrine de Afiliados + Marketplace Digital</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/styles.css">
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-analytics-compat.js"></script>
+</head>
+<body>
+    <!-- Background Espacial -->
+    <div class="space-background">
+        <div class="stars stars-layer-1"></div>
+        <div class="stars stars-layer-2"></div>
+        <div class="nebula nebula-1"></div>
+        <div class="nebula nebula-2"></div>
+        <div class="moon"></div>
+    </div>
+
+    <!-- Container Principal -->
+    <div class="main-container">
+        
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="logo">
+                🚀 MDA Vendas
+            </div>
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <a href="/vitrine" class="btn btn-secondary" style="text-decoration: none;">
+                    🛒 Vitrine
+                </a>
+                <button class="btn btn-secondary" onclick="abrirModal('login')">
+                    Entrar
+                </button>
+                <button class="btn btn-primary" onclick="abrirModal('cadastro')">
+                    Criar Conta
+                </button>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section style="min-height: 100vh; display: flex; align-items: center; padding: 6rem 2rem 2rem;">
+            <div style="max-width: 1200px; margin: 0 auto; text-align: center;">
+                
+                <h1 style="font-size: clamp(2rem, 5vw, 4rem); font-weight: 800; margin-bottom: 1.5rem; line-height: 1.2;">
+                    <span style="background: linear-gradient(135deg, #3b82f6, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">MDA Vendas</span>
+                    <br>
+                    Sua Vitrine de Afiliados + Marketplace Digital
+                </h1>
+                
+                <p style="font-size: 1.25rem; color: #94a3b8; max-width: 700px; margin: 0 auto 3rem;">
+                    Plataforma brasileira inovadora para venda de produtos digitais, com vitrine de afiliados integrada e ferramentas de automação para vendedores.
+                </p>
+
+                <!-- Features Grid -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; max-width: 900px; margin: 0 auto 4rem;">
+                    <div class="card">
+                        <div style="font-size: 2.5rem; margin-bottom: 1rem;">📦</div>
+                        <h3 style="margin-bottom: 0.5rem;">Venda Produtos</h3>
+                        <p style="color: #94a3b8; font-size: 0.9rem;">Cadastre seus produtos digitais e venda para milhares de pessoas</p>
+                    </div>
+                    <div class="card">
+                        <div style="font-size: 2.5rem; margin-bottom: 1rem;">🤝</div>
+                        <h3 style="margin-bottom: 0.5rem;">Afiliados</h3>
+                        <p style="color: #94a3b8; font-size: 0.9rem;">Habilite afiliados e expanda suas vendas automaticamente</p>
+                    </div>
+                    <div class="card">
+                        <div style="font-size: 2.5rem; margin-bottom: 1rem;">💰</div>
+                        <h3 style="margin-bottom: 0.5rem;">Pagamento Seguro</h3>
+                        <p style="color: #94a3b8; font-size: 0.9rem;">Integração com Mercado Pago para receber via Pix</p>
+                    </div>
+                </div>
+
+                <!-- Planos Section -->
+                <div id="planos" style="padding-top: 2rem;">
+                    <h2 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem;">
+                        Escolha seu Plano
+                    </h2>
+                    <p style="color: #94a3b8; margin-bottom: 3rem;">
+                        Comece a vender hoje mesmo! Todos os planos incluem acesso completo.
+                    </p>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; max-width: 1000px; margin: 0 auto;">
+                        
+                        <!-- Plano Mensal -->
+                        <div class="card plan-card">
+                            <div style="text-align: center;">
+                                <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">💎 Mensal</h3>
+                                <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 1rem;">180 dias de acesso</p>
+                                <div class="plan-price">
+                                    R$200<span>/único</span>
+                                </div>
+                                <div style="background: rgba(16, 185, 129, 0.2); color: #10b981; padding: 0.5rem; border-radius: 8px; margin: 1rem 0; font-size: 0.875rem;">
+                                    🔥 15% de desconto
+                                </div>
+                                <ul style="list-style: none; text-align: left; margin: 1.5rem 0;">
+                                    <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.1);">✅ Vitrine ilimitada</li>
+                                    <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.1);">✅ Produtos ilimitados</li>
+                                    <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.1);">✅ Links de afiliados</li>
+                                    <li style="padding: 0.5rem 0;">✅ Suporte por chat</li>
+                                </ul>
+                                <button class="btn btn-primary" style="width: 100%;" onclick="selecionarPlano('mensal')">
+                                    PEGAR PLANO
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Plano Semestral -->
+                        <div class="card plan-card featured">
+                            <div style="text-align: center;">
+                                <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">🚀 Semestral</h3>
+                                <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 1rem;">180 dias + bônus</p>
+                                <div class="plan-price">
+                                    R$500<span>/único</span>
+                                </div>
+                                <div style="background: rgba(245, 158, 11, 0.2); color: #f59e0b; padding: 0.5rem; border-radius: 8px; margin: 1rem 0; font-size: 0.875rem;">
+                                    ⭐ MAIS POPULAR
+                                </div>
+                                <ul style="list-style: none; text-align: left; margin: 1.5rem 0;">
+                                    <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.1);">✅ Tudo do Mensal</li>
+                                    <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.1);">✅ Suporte prioritário</li>
+                                    <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.1);">✅ Destaque na vitrine</li>
+                                    <li style="padding: 0.5rem 0;">✅ Analytics avançado</li>
+                                </ul>
+                                <button class="btn btn-primary" style="width: 100%;" onclick="selecionarPlano('semestral')">
+                                    PEGAR PLANO
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Plano Anual -->
+                        <div class="card plan-card">
+                            <div style="text-align: center;">
+                                <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">👑 Anual</h3>
+                                <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 1rem;">365 dias completos</p>
+                                <div class="plan-price">
+                                    R$1.000<span>/único</span>
+                                </div>
+                                <div style="background: rgba(139, 92, 246, 0.2); color: #8b5cf6; padding: 0.5rem; border-radius: 8px; margin: 1rem 0; font-size: 0.875rem;">
+                                    💎 20% de desconto
+                                </div>
+                                <ul style="list-style: none; text-align: left; margin: 1.5rem 0;">
+                                    <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.1);">✅ Tudo do Semestral</li>
+                                    <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.1);">✅ Acesso beta features</li>
+                                    <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.1);">✅ Mentoria exclusiva</li>
+                                    <li style="padding: 0.5rem 0;">✅ Selo verificado</li>
+                                </ul>
+                                <button class="btn btn-primary" style="width: 100%;" onclick="selecionarPlano('anual')">
+                                    PEGAR PLANO
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer style="padding: 3rem 2rem; border-top: 1px solid rgba(255,255,255,0.1); text-align: center;">
+            <div style="max-width: 1200px; margin: 0 auto;">
+                <div class="logo" style="margin-bottom: 1rem;">🚀 MDA Vendas</div>
+                <p style="color: #64748b; margin-bottom: 1.5rem;">
+                    Plataforma brasileira para venda de produtos digitais
+                </p>
+                <div style="display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 1.5rem;">
+                    <a href="/termos" style="color: #94a3b8; text-decoration: none;">Termos de Uso</a>
+                    <a href="/privacidade" style="color: #94a3b8; text-decoration: none;">Privacidade</a>
+                    <a href="https://wa.me/5511999999999" target="_blank" style="color: #10b981; text-decoration: none;">📱 WhatsApp</a>
+                </div>
+                <p style="color: #475569; font-size: 0.875rem;">
+                    © 2024 MDA Vendas. Todos os direitos reservados.
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Modal de Login -->
+    <div id="modal-login" class="modal-overlay" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 style="font-size: 1.5rem; font-weight: 600;">Entrar na conta</h2>
+                <button class="modal-close" onclick="fecharModal('login')">×</button>
+            </div>
+            
+            <!-- Login com Google -->
+            <button class="btn btn-google" style="width: 100%; margin-bottom: 1rem;" onclick="loginComGoogle()">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+                Entrar com Google
+            </button>
+            
+            <div class="divider">
+                <span>ou use email</span>
+            </div>
+
+            <form id="form-login" onsubmit="loginComEmail(event)">
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="login-email" required placeholder="seu@email.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Senha</label>
+                    <input type="password" class="form-input" id="login-senha" required placeholder="Sua senha">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    Entrar
+                </button>
+            </form>
+
+            <p style="text-align: center; margin-top: 1.5rem; color: #94a3b8;">
+                Não tem conta? <a href="#" onclick="abrirModal('cadastro'); fecharModal('login');" style="color: #3b82f6;">Criar conta</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Modal de Cadastro -->
+    <div id="modal-cadastro" class="modal-overlay" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 style="font-size: 1.5rem; font-weight: 600;">Criar conta</h2>
+                <button class="modal-close" onclick="fecharModal('cadastro')">×</button>
+            </div>
+            
+            <!-- Cadastro com Google -->
+            <button class="btn btn-google" style="width: 100%; margin-bottom: 1rem;" onclick="loginComGoogle()">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+                Cadastrar com Google
+            </button>
+            
+            <div class="divider">
+                <span>ou use email</span>
+            </div>
+
+            <form id="form-cadastro" onsubmit="cadastrarComEmail(event)">
+                <div class="form-group">
+                    <label class="form-label">Nome</label>
+                    <input type="text" class="form-input" id="cadastro-nome" placeholder="Seu nome">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="cadastro-email" required placeholder="seu@email.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Senha</label>
+                    <input type="password" class="form-input" id="cadastro-senha" required placeholder="Crie uma senha forte" minlength="6">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    Criar Conta
+                </button>
+            </form>
+
+            <p style="text-align: center; margin-top: 1.5rem; color: #94a3b8;">
+                Já tem conta? <a href="#" onclick="abrirModal('login'); fecharModal('cadastro');" style="color: #3b82f6;">Entrar</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Modal de Pagamento -->
+    <div id="modal-pagamento" class="modal-overlay" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 style="font-size: 1.5rem; font-weight: 600;">💳 Pagamento PIX</h2>
+                <button class="modal-close" onclick="fecharModal('pagamento')">×</button>
+            </div>
+
+            <!-- Etapa 1: Dados -->
+            <div id="pagamento-etapa-1">
+                <div style="text-align: center; margin-bottom: 1.5rem;">
+                    <div style="font-size: 1.25rem; font-weight: 600;" id="pagamento-plano-nome">Plano Semestral</div>
+                    <div style="font-size: 2.5rem; font-weight: 800; color: #10b981;" id="pagamento-plano-valor">R$ 500</div>
+                </div>
+
+                <form id="form-pagamento" onsubmit="gerarPix(event)">
+                    <div class="form-group">
+                        <label class="form-label">CPF</label>
+                        <input type="text" class="form-input" id="pagamento-cpf" required placeholder="000.000.000-00" maxlength="14">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Telefone</label>
+                        <input type="text" class="form-input" id="pagamento-telefone" placeholder="(00) 00000-0000" maxlength="15">
+                    </div>
+                    <button type="submit" class="btn btn-success" style="width: 100%;">
+                        Gerar QR Code PIX
+                    </button>
+                </form>
+            </div>
+
+            <!-- Etapa 2: QR Code -->
+            <div id="pagamento-etapa-2" style="display: none;">
+                <div style="text-align: center;">
+                    <p style="margin-bottom: 1rem; color: #f59e0b;">
+                        ⏰ Expira em: <span id="pix-timer">05:00</span>
+                    </p>
+                    
+                    <div class="qr-container">
+                        <img id="pix-qr-code" src="" alt="QR Code PIX">
+                    </div>
+
+                    <p style="margin: 1rem 0; font-weight: 500;">ou copie o código PIX:</p>
+                    
+                    <div class="pix-copy" onclick="copiarPix()">
+                        <span id="pix-copia-cola">Gerando...</span>
+                    </div>
+
+                    <button class="btn btn-secondary" style="margin-top: 1rem;" onclick="copiarPix()">
+                        📋 Copiar Código PIX
+                    </button>
+
+                    <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(16, 185, 129, 0.1); border-radius: 10px;">
+                        <p style="color: #10b981; font-size: 0.9rem;">
+                            ✅ Após o pagamento, seu acesso será liberado automaticamente em até 10 segundos!
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Etapa 3: Sucesso -->
+            <div id="pagamento-etapa-3" style="display: none; text-align: center;">
+                <div style="font-size: 4rem; margin-bottom: 1rem;">🎉</div>
+                <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: #10b981;">Pagamento Aprovado!</h3>
+                <p style="color: #94a3b8; margin-bottom: 1.5rem;">Seu plano foi ativado com sucesso.</p>
+                <button class="btn btn-primary" onclick="window.location.href='/dashboard'">
+                    Acessar Dashboard
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Loading Overlay -->
+    <div id="loading" class="loading-overlay" style="display: none;">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // =====================================================
+        // CONFIGURAÇÃO FIREBASE
+        // =====================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyDXl275mY4Aj0Cb_j1e8BYzLYJtTIMaeZY",
+            authDomain: "app-finance-ai.firebaseapp.com",
+            projectId: "app-finance-ai",
+            storageBucket: "app-finance-ai.firebasestorage.app",
+            messagingSenderId: "800034750811",
+            appId: "1:800034750811:web:55840c7a11996f857a5a7e",
+            measurementId: "G-968WNHGNDJ"
+        };
+
+        // Inicializar Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const analytics = firebase.analytics();
+
+        // =====================================================
+        // VARIÁVEIS GLOBAIS
+        // =====================================================
+        let token = localStorage.getItem('token');
+        let usuario = JSON.parse(localStorage.getItem('usuario') || 'null');
+        let planoSelecionado = null;
+        let pagamentoId = null;
+        let timerInterval = null;
+
+        // =====================================================
+        // VERIFICAR AUTENTICAÇÃO AO CARREGAR
+        // =====================================================
+        window.onload = async function() {
+            if (token) {
+                try {
+                    const response = await fetch('/api/auth/me', {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        usuario = data.usuario;
+                        localStorage.setItem('usuario', JSON.stringify(usuario));
+                        
+                        // Se pagou ou é admin, vai para dashboard
+                        if (usuario.plano_pago || usuario.isAdmin) {
+                            window.location.href = '/dashboard';
+                        }
+                    } else {
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('usuario');
+                    }
+                } catch (error) {
+                    console.error('Erro ao verificar auth:', error);
+                }
+            }
+        };
+
+        // =====================================================
+        // MODAIS
+        // =====================================================
+        function abrirModal(tipo) {
+            document.getElementById(`modal-${tipo}`).style.display = 'flex';
+        }
+
+        function fecharModal(tipo) {
+            document.getElementById(`modal-${tipo}`).style.display = 'none';
+        }
+
+        // Fechar modal ao clicar fora
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    overlay.style.display = 'none';
+                }
+            });
+        });
+
+        // =====================================================
+        // TOAST NOTIFICATIONS
+        // =====================================================
+        function mostrarToast(mensagem, tipo = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${tipo}`;
+            toast.innerHTML = mensagem;
+            container.appendChild(toast);
+            
+            setTimeout(() => toast.remove(), 5000);
+        }
+
+        // =====================================================
+        // LOADING
+        // =====================================================
+        function mostrarLoading() {
+            document.getElementById('loading').style.display = 'flex';
+        }
+
+        function esconderLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        // =====================================================
+        // LOGIN COM GOOGLE
+        // =====================================================
+        async function loginComGoogle() {
+            try {
+                mostrarLoading();
+                
+                const provider = new firebase.auth.GoogleAuthProvider();
+                const result = await auth.signInWithPopup(provider);
+                const user = result.user;
+
+                // Enviar para backend
+                const response = await fetch('/api/auth/google', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: user.email,
+                        nome: user.displayName,
+                        foto: user.photoURL,
+                        firebase_uid: user.uid
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    token = data.token;
+                    usuario = data.usuario;
+                    
+                    localStorage.setItem('token', token);
+                    localStorage.setItem('usuario', JSON.stringify(usuario));
+                    
+                    fecharModal('login');
+                    fecharModal('cadastro');
+                    
+                    mostrarToast('✅ Login realizado com sucesso!', 'success');
+
+                    // Se tem plano ou é admin, vai para dashboard
+                    if (usuario.plano_pago || usuario.isAdmin) {
+                        setTimeout(() => {
+                            window.location.href = '/dashboard';
+                        }, 1000);
+                    } else {
+                        // Mostrar modal de planos
+                        mostrarToast('📋 Escolha um plano para acessar a plataforma', 'info');
+                        document.getElementById('planos').scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    mostrarToast('❌ ' + data.message, 'error');
+                }
+            } catch (error) {
+                console.error('Erro no login Google:', error);
+                mostrarToast('❌ Erro ao fazer login com Google', 'error');
+            } finally {
+                esconderLoading();
+            }
+        }
+
+        // =====================================================
+        // LOGIN COM EMAIL
+        // =====================================================
+        async function loginComEmail(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('login-email').value;
+            const senha = document.getElementById('login-senha').value;
+
+            try {
+                mostrarLoading();
+
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, senha })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    token = data.token;
+                    usuario = data.usuario;
+                    
+                    localStorage.setItem('token', token);
+                    localStorage.setItem('usuario', JSON.stringify(usuario));
+                    
+                    fecharModal('login');
+                    mostrarToast('✅ Login realizado!', 'success');
+
+                    if (usuario.plano_pago || usuario.isAdmin) {
+                        setTimeout(() => window.location.href = '/dashboard', 1000);
+                    } else {
+                        mostrarToast('📋 Escolha um plano para acessar', 'info');
+                        document.getElementById('planos').scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    mostrarToast('❌ ' + data.message, 'error');
+                }
+            } catch (error) {
+                mostrarToast('❌ Erro ao fazer login', 'error');
+            } finally {
+                esconderLoading();
+            }
+        }
+
+        // =====================================================
+        // CADASTRO COM EMAIL
+        // =====================================================
+        async function cadastrarComEmail(event) {
+            event.preventDefault();
+            
+            const nome = document.getElementById('cadastro-nome').value;
+            const email = document.getElementById('cadastro-email').value;
+            const senha = document.getElementById('cadastro-senha').value;
+
+            try {
+                mostrarLoading();
+
+                const response = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nome, email, senha })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    token = data.token;
+                    usuario = data.usuario;
+                    
+                    localStorage.setItem('token', token);
+                    localStorage.setItem('usuario', JSON.stringify(usuario));
+                    
+                    fecharModal('cadastro');
+                    mostrarToast('✅ Conta criada com sucesso!', 'success');
+
+                    if (usuario.plano_pago || usuario.isAdmin) {
+                        setTimeout(() => window.location.href = '/dashboard', 1000);
+                    } else {
+                        mostrarToast('📋 Agora escolha um plano para acessar', 'info');
+                        document.getElementById('planos').scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    mostrarToast('❌ ' + data.message, 'error');
+                }
+            } catch (error) {
+                mostrarToast('❌ Erro ao criar conta', 'error');
+            } finally {
+                esconderLoading();
+            }
+        }
+
+        // =====================================================
+        // PLANOS E PAGAMENTO
+        // =====================================================
+        const PLANOS_INFO = {
+            mensal: { nome: 'Plano Mensal', valor: 200 },
+            semestral: { nome: 'Plano Semestral', valor: 500 },
+            anual: { nome: 'Plano Anual', valor: 1000 }
+        };
+
+        function selecionarPlano(plano) {
+            planoSelecionado = plano;
+
+            // Se não está logado, pedir login primeiro
+            if (!token || !usuario) {
+                mostrarToast('⚠️ Faça login primeiro para adquirir um plano', 'warning');
+                abrirModal('cadastro');
+                return;
+            }
+
+            // Se já pagou ou é admin
+            if (usuario.plano_pago || usuario.isAdmin) {
+                window.location.href = '/dashboard';
+                return;
+            }
+
+            // Mostrar modal de pagamento
+            const info = PLANOS_INFO[plano];
+            document.getElementById('pagamento-plano-nome').textContent = info.nome;
+            document.getElementById('pagamento-plano-valor').textContent = `R$ ${info.valor}`;
+            
+            document.getElementById('pagamento-etapa-1').style.display = 'block';
+            document.getElementById('pagamento-etapa-2').style.display = 'none';
+            document.getElementById('pagamento-etapa-3').style.display = 'none';
+            
+            abrirModal('pagamento');
+        }
+
+        // =====================================================
+        // GERAR PIX REAL
+        // =====================================================
+        async function gerarPix(event) {
+            event.preventDefault();
+
+            const cpf = document.getElementById('pagamento-cpf').value;
+            const telefone = document.getElementById('pagamento-telefone').value;
+
+            if (!cpf) {
+                mostrarToast('⚠️ Digite seu CPF', 'warning');
+                return;
+            }
+
+            try {
+                mostrarLoading();
+
+                const response = await fetch('/api/pagamento/pix', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        plano: planoSelecionado,
+                        cpf: cpf,
+                        telefone: telefone
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    pagamentoId = data.pagamento_id;
+                    
+                    // Mostrar QR Code
+                    document.getElementById('pix-qr-code').src = `data:image/png;base64,${data.qr_code_base64}`;
+                    document.getElementById('pix-copia-cola').textContent = data.pix_copia_cola;
+                    
+                    document.getElementById('pagamento-etapa-1').style.display = 'none';
+                    document.getElementById('pagamento-etapa-2').style.display = 'block';
+
+                    // Iniciar timer
+                    iniciarTimer(30 * 60); // 30 minutos
+
+                    // Iniciar verificação de pagamento
+                    verificarPagamento();
+                } else {
+                    mostrarToast('❌ ' + data.message, 'error');
+                }
+            } catch (error) {
+                console.error('Erro ao gerar PIX:', error);
+                mostrarToast('❌ Erro ao gerar PIX', 'error');
+            } finally {
+                esconderLoading();
+            }
+        }
+
+        // =====================================================
+        // TIMER
+        // =====================================================
+        function iniciarTimer(segundos) {
+            if (timerInterval) clearInterval(timerInterval);
+
+            let tempoRestante = segundos;
+
+            timerInterval = setInterval(() => {
+                const minutos = Math.floor(tempoRestante / 60);
+                const segs = tempoRestante % 60;
+                document.getElementById('pix-timer').textContent = 
+                    `${String(minutos).padStart(2, '0')}:${String(segs).padStart(2, '0')}`;
+                
+                tempoRestante--;
+
+                if (tempoRestante < 0) {
+                    clearInterval(timerInterval);
+                    mostrarToast('⏰ PIX expirado. Gere um novo código.', 'warning');
+                }
+            }, 1000);
+        }
+
+        // =====================================================
+        // VERIFICAR PAGAMENTO
+        // =====================================================
+        function verificarPagamento() {
+            const intervalo = setInterval(async () => {
+                try {
+                    const response = await fetch(`/api/pagamento/status/${pagamentoId}`, {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success && data.aprovado) {
+                        clearInterval(intervalo);
+                        clearInterval(timerInterval);
+
+                        // Atualizar usuário local
+                        usuario.plano_pago = true;
+                        localStorage.setItem('usuario', JSON.stringify(usuario));
+
+                        // Mostrar sucesso
+                        document.getElementById('pagamento-etapa-2').style.display = 'none';
+                        document.getElementById('pagamento-etapa-3').style.display = 'block';
+
+                        mostrarToast('🎉 Pagamento aprovado!', 'success');
+                    }
+                } catch (error) {
+                    console.error('Erro ao verificar pagamento:', error);
+                }
+            }, 5000); // Verificar a cada 5 segundos
+        }
+
+        // =====================================================
+        // COPIAR PIX
+        // =====================================================
+        function copiarPix() {
+            const codigo = document.getElementById('pix-copia-cola').textContent;
+            navigator.clipboard.writeText(codigo).then(() => {
+                mostrarToast('📋 Código PIX copiado!', 'success');
+            });
+        }
+
+        // =====================================================
+        // MÁSCARAS DE INPUT
+        // =====================================================
+        document.getElementById('pagamento-cpf').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            e.target.value = value;
+        });
+
+        document.getElementById('pagamento-telefone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            value = value.replace(/^(\d{2})(\d)/, '($1) $2');
+            value = value.replace(/(\d{5})(\d)/, '$1-$2');
+            e.target.value = value;
+        });
+    </script>
+</body>
+</html>
