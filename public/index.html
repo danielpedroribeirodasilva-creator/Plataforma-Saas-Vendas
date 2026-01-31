@@ -315,10 +315,8 @@
         }
     </style>
 
-    <!-- Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-analytics-compat.js"></script>
+    <!-- Auth0 SPA SDK -->
+    <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
 </head>
 
 <body>
@@ -877,22 +875,43 @@
     <!-- Scripts -->
     <script>
         // =====================================================
-        // CONFIGURAÇÃO FIREBASE
+        // CONFIGURAÇÃO AUTH0
         // =====================================================
-        const firebaseConfig = {
-            apiKey: "AIzaSyDXl275mY4Aj0Cb_j1e8BYzLYJtTIMaeZY",
-            authDomain: "app-finance-ai.firebaseapp.com",
-            projectId: "app-finance-ai",
-            storageBucket: "app-finance-ai.firebasestorage.app",
-            messagingSenderId: "800034750811",
-            appId: "1:800034750811:web:55840c7a11996f857a5a7e",
-            measurementId: "G-968WNHGNDJ"
+        const auth0Config = {
+            domain: 'dev-wjozy17a6uvy4w1t.us.auth0.com',
+            clientId: 'WcXtEDk5HU8wdTyFv8kxf4mmKqvAvVHy',
+            authorizationParams: {
+                redirect_uri: window.location.origin
+            }
         };
 
-        // Inicializar Firebase
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const analytics = firebase.analytics();
+        let auth0Client = null;
+
+        // Inicializar Auth0
+        async function initAuth0() {
+            try {
+                auth0Client = await auth0.createAuth0Client(auth0Config);
+                console.log('✅ Auth0 inicializado');
+
+                // Verificar se voltou de um redirect
+                const query = window.location.search;
+                if (query.includes('code=') && query.includes('state=')) {
+                    console.log('🔄 Processando callback do Auth0...');
+                    mostrarLoading();
+                    await auth0Client.handleRedirectCallback();
+                    window.history.replaceState({}, document.title, window.location.pathname);
+
+                    // Processar login
+                    const user = await auth0Client.getUser();
+                    if (user) {
+                        await processarLoginAuth0(user);
+                    }
+                    esconderLoading();
+                }
+            } catch (error) {
+                console.error('Erro ao inicializar Auth0:', error);
+            }
+        }
 
         // =====================================================
         // VARIÁVEIS GLOBAIS
@@ -907,6 +926,9 @@
         // VERIFICAR AUTENTICAÇÃO AO CARREGAR
         // =====================================================
         window.onload = async function () {
+            // Inicializar Auth0
+            await initAuth0();
+
             if (token) {
                 try {
                     const response = await fetch('/api/auth/me', {
@@ -977,29 +999,28 @@
         }
 
         // =====================================================
-        // LOGIN COM GOOGLE
+        // PROCESSAR LOGIN AUTH0
         // =====================================================
-        async function loginComGoogle() {
+        async function processarLoginAuth0(user) {
             try {
-                mostrarLoading();
-
-                const provider = new firebase.auth.GoogleAuthProvider();
-                const result = await auth.signInWithPopup(provider);
-                const user = result.user;
+                console.log('👤 Usuário Auth0:', user.email);
 
                 // Enviar para backend
+                console.log('📤 Enviando para backend...');
                 const response = await fetch('/api/auth/google', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         email: user.email,
-                        nome: user.displayName,
-                        foto: user.photoURL,
-                        firebase_uid: user.uid
+                        nome: user.name || user.nickname,
+                        foto: user.picture,
+                        auth0_sub: user.sub
                     })
                 });
 
+                console.log('📥 Resposta status:', response.status);
                 const data = await response.json();
+                console.log('📥 Resposta dados:', data);
 
                 if (data.success) {
                     token = data.token;
@@ -1015,6 +1036,7 @@
 
                     // Se tem plano ou é admin, vai para dashboard
                     if (usuario.plano_pago || usuario.isAdmin) {
+                        console.log('🚀 Redirecionando para dashboard...');
                         setTimeout(() => {
                             window.location.href = '/dashboard';
                         }, 1000);
@@ -1024,12 +1046,37 @@
                         document.getElementById('planos').scrollIntoView({ behavior: 'smooth' });
                     }
                 } else {
+                    console.error('❌ Erro do backend:', data.message);
                     mostrarToast('❌ ' + data.message, 'error');
                 }
             } catch (error) {
-                console.error('Erro no login Google:', error);
+                console.error('❌ Erro ao processar login:', error);
+                mostrarToast('❌ Erro ao fazer login', 'error');
+            }
+        }
+
+        // =====================================================
+        // LOGIN COM GOOGLE (AUTH0)
+        // =====================================================
+        async function loginComGoogle() {
+            try {
+                mostrarLoading();
+                console.log('🔵 Iniciando login com Auth0...');
+
+                if (!auth0Client) {
+                    await initAuth0();
+                }
+
+                // Usar redirect para login
+                await auth0Client.loginWithRedirect({
+                    authorizationParams: {
+                        connection: 'google-oauth2',
+                        redirect_uri: window.location.origin
+                    }
+                });
+            } catch (error) {
+                console.error('❌ Erro no login Auth0:', error);
                 mostrarToast('❌ Erro ao fazer login com Google', 'error');
-            } finally {
                 esconderLoading();
             }
         }

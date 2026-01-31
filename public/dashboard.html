@@ -10,8 +10,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
 </head>
 
 <body>
@@ -380,15 +378,6 @@
 
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <script>
-        // Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyDXl275mY4Aj0Cb_j1e8BYzLYJtTIMaeZY",
-            authDomain: "app-finance-ai.firebaseapp.com",
-            projectId: "app-finance-ai"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-
         // Variáveis
         let token = localStorage.getItem('token');
         let usuario = JSON.parse(localStorage.getItem('usuario') || 'null');

@@ -61,13 +61,13 @@ const UsuarioSchema = new mongoose.Schema({
         enum: ['usuario', 'adm_cuidador', 'adm_completo', 'sub_dono', 'dono'],
         default: 'usuario'
     },
-    firebase_uid: {
+    auth0_sub: {
         type: String,
         default: null
     },
     auth_provider: {
         type: String,
-        enum: ['email', 'google'],
+        enum: ['email', 'google', 'auth0'],
         default: 'email'
     },
     plano_ativo: {
@@ -467,7 +467,7 @@ const criarAdminMaster = async () => {
                     data_inicio: new Date(),
                     data_expiracao: new Date(Date.now() + 365 * 100 * 24 * 60 * 60 * 1000) // 100 anos
                 },
-                auth_provider: 'google',
+                auth_provider: 'auth0',
                 ativo: true
             });
 

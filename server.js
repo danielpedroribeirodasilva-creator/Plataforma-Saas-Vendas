@@ -29,38 +29,14 @@ const app = express();
 const server = http.createServer(app);
 
 // =====================================================
-// INICIALIZAR FIREBASE ADMIN
+// AUTH0 CONFIGURATION
 // =====================================================
-const admin = require('firebase-admin');
-let firebaseInitialized = false;
-
-try {
-    // Tenta inicializar com a variável de ambiente se existir
-    if (process.env.FIREBASE_SERVICE_ACCOUNT) {
-        const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-        admin.initializeApp({
-            credential: admin.credential.cert(serviceAccount)
-        });
-        firebaseInitialized = true;
-        console.log('✅ Firebase Admin inicializado com conta de serviço');
-    } else if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
-        // Tenta inicializar com credenciais padrão do Google
-        admin.initializeApp();
-        firebaseInitialized = true;
-        console.log('✅ Firebase Admin inicializado com credenciais padrão');
-    } else {
-        console.warn('⚠️ Firebase Admin não configurado - Login com Google via backend desabilitado');
-        console.warn('⚠️ Para habilitar, configure FIREBASE_SERVICE_ACCOUNT no ambiente');
-    }
-} catch (error) {
-    if (error.code === 'app/already-exists') {
-        firebaseInitialized = true;
-        console.log('ℹ️ Firebase Admin já estava inicializado');
-    } else {
-        console.warn('⚠️ Erro ao inicializar Firebase Admin:', error.message);
-        console.warn('⚠️ Login com Google via backend não funcionará');
-    }
-}
+// Auth0 é usado para autenticação via frontend
+// Credenciais Auth0:
+// Domain: dev-wjozy17a6uvy4w1t.us.auth0.com
+// Client ID: WcXtEDk5HU8wdTyFv8kxf4mmKqvAvVHy
+// App Name: Plataforma De Vendas
+console.log('✅ Auth0 configurado para autenticação via frontend');
 
 // Configurar WebSockets
 const io = configurarWebSockets(server);
@@ -210,10 +186,10 @@ app.post('/api/auth/login', async (req, res) => {
     }
 });
 
-// Login/Registro com Google (Firebase)
+// Login/Registro com Google (Auth0)
 app.post('/api/auth/google', async (req, res) => {
     try {
-        const { email, nome, foto, firebase_uid } = req.body;
+        const { email, nome, foto, auth0_sub } = req.body;
 
         if (!email) {
             return res.status(400).json({ success: false, message: 'Email é obrigatório' });
@@ -228,8 +204,8 @@ app.post('/api/auth/google', async (req, res) => {
                 email: email.toLowerCase(),
                 nome: nome || '',
                 foto: foto || '',
-                firebase_uid: firebase_uid,
-                auth_provider: 'google',
+                auth0_sub: auth0_sub,
+                auth_provider: 'auth0',
                 plano_pago: false
             });
 
@@ -250,14 +226,14 @@ app.post('/api/auth/google', async (req, res) => {
             // Registrar auditoria
             await new Auditoria({
                 usuario: usuario._id,
-                acao: 'cadastro_google',
-                descricao: 'Novo cadastro via Google'
+                acao: 'cadastro_auth0',
+                descricao: 'Novo cadastro via Auth0/Google'
             }).save();
         } else {
             // Atualizar dados do Google
             if (nome) usuario.nome = nome;
             if (foto) usuario.foto = foto;
-            if (firebase_uid) usuario.firebase_uid = firebase_uid;
+            if (auth0_sub) usuario.auth0_sub = auth0_sub;
             usuario.ultimo_login = new Date();
             await usuario.save();
         }
@@ -280,8 +256,8 @@ app.post('/api/auth/google', async (req, res) => {
             }
         });
     } catch (error) {
-        console.error('Erro no login Google:', error);
-        res.status(500).json({ success: false, message: 'Erro ao autenticar com Google' });
+        console.error('Erro no login Auth0:', error);
+        res.status(500).json({ success: false, message: 'Erro ao autenticar com Auth0' });
     }
 });
 
