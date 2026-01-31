@@ -12,28 +12,30 @@ const client = new MercadoPagoConfig({
 
 const payment = new Payment(client);
 
-// Valores dos planos em centavos e reais
+// Valores dos planos - Assinatura Mensal/Anual
 const PLANOS = {
     mensal: {
         nome: 'Plano Mensal',
-        valor: 200.00,
-        dias: 180,
-        desconto: '15%',
-        descricao: '180 dias de acesso completo'
+        valor: 29.90,
+        periodo: 'mês',
+        dias: 30,
+        descríção: 'Acesso completo mensal'
     },
     semestral: {
         nome: 'Plano Semestral',
-        valor: 500.00,
-        dias: 180,
-        desconto: '15%',
-        descricao: '180 dias de acesso completo com bônus'
+        valor: 19.90,
+        valorOriginal: 500.00,
+        periodo: 'mês',
+        dias: 30,
+        promocional: true,
+        descricao: 'Acesso completo com preço promocional'
     },
     anual: {
         nome: 'Plano Anual',
-        valor: 1000.00,
+        valor: 199.90,
+        periodo: 'ano',
         dias: 365,
-        desconto: '20%',
-        descricao: '365 dias de acesso + atualizações beta'
+        descricao: 'Acesso completo por 1 ano'
     }
 };
 

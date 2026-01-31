@@ -100,7 +100,7 @@
                         <div class="value" id="stat-views">0</div>
                         <div class="label">Visualizações</div>
                     </div>
-                    <div class="stat-card">
+                    <div class="stat-card" id="stat-dias-card">
                         <div class="icon">📅</div>
                         <div class="value" id="stat-dias">0</div>
                         <div class="label">Dias Restantes</div>
@@ -186,9 +186,11 @@
                         <div style="flex: 1;">
                             <p style="margin-bottom: 1rem;"><strong>Status:</strong> <span id="plano-status"
                                     class="badge badge-success">Ativo</span></p>
-                            <p style="margin-bottom: 1rem;"><strong>Dias Restantes:</strong> <span
-                                    id="plano-dias-detalhe">0</span></p>
-                            <p><strong>Expira em:</strong> <span id="plano-expiracao">-</span></p>
+                            <p style="margin-bottom: 1rem;" id="plano-dias-container"><strong>Dias Restantes:</strong>
+                                <span id="plano-dias-detalhe">0</span>
+                            </p>
+                            <p id="plano-expiracao-container"><strong>Expira em:</strong> <span
+                                    id="plano-expiracao">-</span></p>
                         </div>
                     </div>
                 </div>
@@ -455,6 +457,10 @@
 
             if (usuario.isAdmin) {
                 document.getElementById('menu-admin').style.display = 'block';
+                // Esconder contagem de dias para administradores
+                document.getElementById('stat-dias-card').style.display = 'none';
+                document.getElementById('plano-dias-container').style.display = 'none';
+                document.getElementById('plano-expiracao-container').style.display = 'none';
             }
 
             // Plano
