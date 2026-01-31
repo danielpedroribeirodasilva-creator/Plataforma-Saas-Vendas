@@ -1,199 +1,611 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="MDA Vendas - Plataforma brasileira inovadora para venda de produtos digitais com vitrine de afiliados e marketplace colaborativo">
+    <meta name="description"
+        content="MDA Vendas - Plataforma brasileira inovadora para venda de produtos digitais com vitrine de afiliados e marketplace colaborativo">
     <meta name="keywords" content="produtos digitais, afiliados, marketplace, vendas online, cursos, ebooks">
     <title>MDA Vendas - Sua Vitrine de Afiliados + Marketplace Digital</title>
-    
-    <!-- Google Fonts -->
+
+    <!-- Google Fonts - Inter (same as Kirvano) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
     <!-- CSS -->
     <link rel="stylesheet" href="/css/styles.css">
-    
+
+    <!-- Professional Styles Inline -->
+    <style>
+        :root {
+            --primary-red: #dc2626;
+            --primary-dark: #991b1b;
+            --bg-dark: #000;
+            --bg-card: rgba(255, 255, 255, 0.03);
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000;
+            color: #fff;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* Video Background */
+        .hero-video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .hero-video-container video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+        }
+
+        .hero-video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0.9) 100%);
+            z-index: 1;
+        }
+
+        /* Modern Navbar */
+        .pro-navbar {
+            position: fixed;
+            top: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            background: rgba(20, 20, 20, 0.85);
+            backdrop-filter: blur(20px);
+            border-radius: 100px;
+            padding: 8px 8px 8px 32px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 900px;
+            width: 90%;
+        }
+
+        .pro-logo {
+            font-size: 1.25rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ff4444, #cc0000);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pro-nav-links {
+            display: flex;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .pro-nav-link {
+            color: #a1a1aa;
+            text-decoration: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .pro-nav-link:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .pro-nav-cta {
+            background: linear-gradient(135deg, #dc2626, #991b1b);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .pro-nav-cta:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(220, 38, 38, 0.5);
+        }
+
+        /* Hero Section */
+        .pro-hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 24px 80px;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .pro-hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+        }
+
+        .pro-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(220, 38, 38, 0.15);
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 0.875rem;
+            color: #ff6b6b;
+            margin-bottom: 32px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        .pro-hero-title {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            letter-spacing: -2px;
+        }
+
+        .pro-hero-title .highlight {
+            background: linear-gradient(135deg, #ff4444, #ff0000, #cc0000);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .pro-hero-subtitle {
+            font-size: 1.25rem;
+            color: #a1a1aa;
+            max-width: 600px;
+            margin: 0 auto 48px;
+            line-height: 1.6;
+        }
+
+        .pro-hero-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 64px;
+        }
+
+        .pro-btn-primary {
+            background: linear-gradient(135deg, #dc2626, #991b1b);
+            color: #fff;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pro-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(220, 38, 38, 0.4);
+        }
+
+        .pro-btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pro-btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Stats Bar */
+        .pro-stats {
+            display: flex;
+            gap: 48px;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 32px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .pro-stat {
+            text-align: center;
+        }
+
+        .pro-stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #ff4444;
+        }
+
+        .pro-stat-label {
+            font-size: 0.875rem;
+            color: #71717a;
+            margin-top: 4px;
+        }
+
+        /* Logos Section */
+        .pro-logos {
+            margin-top: 80px;
+            text-align: center;
+        }
+
+        .pro-logos-title {
+            font-size: 0.875rem;
+            color: #52525b;
+            margin-bottom: 24px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .pro-logos-grid {
+            display: flex;
+            gap: 48px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            opacity: 0.6;
+        }
+
+        .pro-logos-grid span {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #52525b;
+        }
+    </style>
+
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-analytics-compat.js"></script>
 </head>
+
 <body>
-    <!-- Video Background 3D -->
-    <div class="video-background">
-        <video autoplay muted loop playsinline>
-            <source src="https://cdn.pixabay.com/video/2020/05/25/40130-424930944_large.mp4" type="video/mp4">
-        </video>
-    </div>
-    <div class="video-overlay"></div>
+    <!-- Professional Navbar -->
+    <nav class="pro-navbar">
+        <div class="pro-logo">
+            🔥 MDA Vendas
+        </div>
+        <div class="pro-nav-links">
+            <a href="#recursos" class="pro-nav-link">Recursos</a>
+            <a href="#planos" class="pro-nav-link">Planos</a>
+            <a href="/vitrine" class="pro-nav-link">Vitrine</a>
+        </div>
+        <button class="pro-nav-cta" onclick="abrirModal('cadastro')">Começar Grátis</button>
+    </nav>
 
-    <!-- Background com Estrelas e Lua Vermelha -->
-    <div class="space-background">
-        <div class="stars stars-layer-1"></div>
-        <div class="stars stars-layer-2"></div>
-        <div class="nebula nebula-1"></div>
-        <div class="nebula nebula-2"></div>
-        <div class="moon"></div>
-    </div>
+    <!-- Hero Section with 3D Video -->
+    <section class="pro-hero">
+        <!-- Video Background -->
+        <div class="hero-video-container">
+            <video autoplay muted loop playsinline>
+                <source src="https://cdn.pixabay.com/video/2020/07/30/46026-445612010_large.mp4" type="video/mp4">
+            </video>
+            <div class="hero-video-overlay"></div>
+        </div>
 
-    <!-- Container Principal -->
-    <div class="main-container">
-        
-        <!-- Navbar -->
-        <nav class="navbar">
-            <div class="logo">
-                🚀 MDA Vendas
+        <!-- Hero Content -->
+        <div class="pro-hero-content">
+            <div class="pro-badge">
+                <span>🚀</span>
+                <span>A plataforma #1 de vendas digitais do Brasil</span>
             </div>
-            <div style="display: flex; gap: 1rem; align-items: center;">
-                <a href="/vitrine" class="btn btn-secondary" style="text-decoration: none;">
-                    🛒 Vitrine
-                </a>
-                <button class="btn btn-secondary" onclick="abrirModal('login')">
-                    Entrar
+
+            <h1 class="pro-hero-title">
+                Venda seus <span class="highlight">produtos digitais</span> com a menor taxa do mercado
+            </h1>
+
+            <p class="pro-hero-subtitle">
+                Crie sua vitrine, habilite afiliados, receba via Pix instantâneo. Tudo em uma única plataforma
+                profissional.
+            </p>
+
+            <div class="pro-hero-buttons">
+                <button class="pro-btn-primary" onclick="abrirModal('cadastro')">
+                    <span>Criar Conta Grátis</span>
+                    <span>→</span>
                 </button>
-                <button class="btn btn-primary" onclick="abrirModal('cadastro')">
-                    Criar Conta
+                <button class="pro-btn-secondary" onclick="abrirModal('login')">
+                    <span>Entrar</span>
                 </button>
             </div>
-        </nav>
 
-        <!-- Hero Section -->
-        <section style="min-height: 100vh; display: flex; align-items: center; padding: 6rem 2rem 2rem;">
-            <div style="max-width: 1200px; margin: 0 auto; text-align: center;">
-                
-                <h1 style="font-size: clamp(2rem, 5vw, 4rem); font-weight: 800; margin-bottom: 1.5rem; line-height: 1.2;">
-                    <span style="background: linear-gradient(135deg, #3b82f6, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">MDA Vendas</span>
-                    <br>
-                    Sua Vitrine de Afiliados + Marketplace Digital
-                </h1>
-                
-                <p style="font-size: 1.25rem; color: #94a3b8; max-width: 700px; margin: 0 auto 3rem;">
-                    Plataforma brasileira inovadora para venda de produtos digitais, com vitrine de afiliados integrada e ferramentas de automação para vendedores.
-                </p>
-
-                <!-- Features Grid -->
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; max-width: 900px; margin: 0 auto 4rem;">
-                    <div class="card">
-                        <div style="font-size: 2.5rem; margin-bottom: 1rem;">📦</div>
-                        <h3 style="margin-bottom: 0.5rem;">Venda Produtos</h3>
-                        <p style="color: #94a3b8; font-size: 0.9rem;">Cadastre seus produtos digitais e venda para milhares de pessoas</p>
-                    </div>
-                    <div class="card">
-                        <div style="font-size: 2.5rem; margin-bottom: 1rem;">🤝</div>
-                        <h3 style="margin-bottom: 0.5rem;">Afiliados</h3>
-                        <p style="color: #94a3b8; font-size: 0.9rem;">Habilite afiliados e expanda suas vendas automaticamente</p>
-                    </div>
-                    <div class="card">
-                        <div style="font-size: 2.5rem; margin-bottom: 1rem;">💰</div>
-                        <h3 style="margin-bottom: 0.5rem;">Pagamento Seguro</h3>
-                        <p style="color: #94a3b8; font-size: 0.9rem;">Integração com Mercado Pago para receber via Pix</p>
-                    </div>
+            <div class="pro-stats">
+                <div class="pro-stat">
+                    <div class="pro-stat-value">2.9%</div>
+                    <div class="pro-stat-label">Taxa por venda</div>
                 </div>
-
-                <!-- Planos Section -->
-                <div id="planos" style="padding-top: 2rem;">
-                    <h2 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem;">
-                        Escolha seu Plano
-                    </h2>
-                    <p style="color: #94a3b8; margin-bottom: 3rem;">
-                        Comece a vender hoje mesmo! Todos os planos incluem acesso completo.
-                    </p>
-
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; max-width: 1000px; margin: 0 auto;">
-                        
-                        <!-- Plano Mensal -->
-                        <div class="card plan-card">
-                            <div style="text-align: center;">
-                                <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">💎 Mensal</h3>
-                                <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 1rem;">180 dias de acesso</p>
-                                <div class="plan-price">
-                                    R$200<span>/único</span>
-                                </div>
-                                <div style="background: rgba(16, 185, 129, 0.2); color: #10b981; padding: 0.5rem; border-radius: 8px; margin: 1rem 0; font-size: 0.875rem;">
-                                    🔥 15% de desconto
-                                </div>
-                                <ul style="list-style: none; text-align: left; margin: 1.5rem 0;">
-                                    <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.1);">✅ Vitrine ilimitada</li>
-                                    <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.1);">✅ Produtos ilimitados</li>
-                                    <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.1);">✅ Links de afiliados</li>
-                                    <li style="padding: 0.5rem 0;">✅ Suporte por chat</li>
-                                </ul>
-                                <button class="btn btn-primary" style="width: 100%;" onclick="selecionarPlano('mensal')">
-                                    PEGAR PLANO
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Plano Semestral -->
-                        <div class="card plan-card featured">
-                            <div style="text-align: center;">
-                                <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">🚀 Semestral</h3>
-                                <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 1rem;">180 dias + bônus</p>
-                                <div class="plan-price">
-                                    R$500<span>/único</span>
-                                </div>
-                                <div style="background: rgba(245, 158, 11, 0.2); color: #f59e0b; padding: 0.5rem; border-radius: 8px; margin: 1rem 0; font-size: 0.875rem;">
-                                    ⭐ MAIS POPULAR
-                                </div>
-                                <ul style="list-style: none; text-align: left; margin: 1.5rem 0;">
-                                    <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.1);">✅ Tudo do Mensal</li>
-                                    <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.1);">✅ Suporte prioritário</li>
-                                    <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.1);">✅ Destaque na vitrine</li>
-                                    <li style="padding: 0.5rem 0;">✅ Analytics avançado</li>
-                                </ul>
-                                <button class="btn btn-primary" style="width: 100%;" onclick="selecionarPlano('semestral')">
-                                    PEGAR PLANO
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Plano Anual -->
-                        <div class="card plan-card">
-                            <div style="text-align: center;">
-                                <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">👑 Anual</h3>
-                                <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 1rem;">365 dias completos</p>
-                                <div class="plan-price">
-                                    R$1.000<span>/único</span>
-                                </div>
-                                <div style="background: rgba(139, 92, 246, 0.2); color: #8b5cf6; padding: 0.5rem; border-radius: 8px; margin: 1rem 0; font-size: 0.875rem;">
-                                    💎 20% de desconto
-                                </div>
-                                <ul style="list-style: none; text-align: left; margin: 1.5rem 0;">
-                                    <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.1);">✅ Tudo do Semestral</li>
-                                    <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.1);">✅ Acesso beta features</li>
-                                    <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.1);">✅ Mentoria exclusiva</li>
-                                    <li style="padding: 0.5rem 0;">✅ Selo verificado</li>
-                                </ul>
-                                <button class="btn btn-primary" style="width: 100%;" onclick="selecionarPlano('anual')">
-                                    PEGAR PLANO
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                <div class="pro-stat">
+                    <div class="pro-stat-value">Pix</div>
+                    <div class="pro-stat-label">Receba na hora</div>
+                </div>
+                <div class="pro-stat">
+                    <div class="pro-stat-value">∞</div>
+                    <div class="pro-stat-label">Produtos ilimitados</div>
+                </div>
+                <div class="pro-stat">
+                    <div class="pro-stat-value">100%</div>
+                    <div class="pro-stat-label">Brasileiro</div>
                 </div>
             </div>
-        </section>
 
-        <!-- Footer -->
-        <footer style="padding: 3rem 2rem; border-top: 1px solid rgba(255,255,255,0.1); text-align: center;">
-            <div style="max-width: 1200px; margin: 0 auto;">
-                <div class="logo" style="margin-bottom: 1rem;">🚀 MDA Vendas</div>
-                <p style="color: #64748b; margin-bottom: 1.5rem;">
-                    Plataforma brasileira para venda de produtos digitais
-                </p>
-                <div style="display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 1.5rem;">
-                    <a href="/termos" style="color: #94a3b8; text-decoration: none;">Termos de Uso</a>
-                    <a href="/privacidade" style="color: #94a3b8; text-decoration: none;">Privacidade</a>
-                    <a href="https://wa.me/5511999999999" target="_blank" style="color: #10b981; text-decoration: none;">📱 WhatsApp</a>
+            <div class="pro-logos">
+                <p class="pro-logos-title">Aceite múltiplas formas de pagamento</p>
+                <div class="pro-logos-grid">
+                    <span>💳 Pix</span>
+                    <span>💳 Cartão</span>
+                    <span>🏦 Boleto</span>
+                    <span>📱 Mercado Pago</span>
                 </div>
-                <p style="color: #475569; font-size: 0.875rem;">
-                    © 2024 MDA Vendas. Todos os direitos reservados.
+            </div>
+        </div>
+    </section>
+
+    <!-- Professional Features Section -->
+    <section id="recursos" style="background: #000; padding: 120px 24px;">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <div style="text-align: center; margin-bottom: 80px;">
+                <span style="display: inline-block; background: rgba(220,38,38,0.1); color: #ff4444; padding: 8px 20px; border-radius: 100px; font-size: 0.875rem; font-weight: 500; margin-bottom: 24px; border: 1px solid rgba(220,38,38,0.2);">⚡ Recursos Poderosos</span>
+                <h2 style="font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; margin-bottom: 20px; letter-spacing: -1px;">
+                    Tudo que você precisa para <span style="background: linear-gradient(135deg, #ff4444, #cc0000); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">vender mais</span>
+                </h2>
+                <p style="color: #71717a; font-size: 1.125rem; max-width: 600px; margin: 0 auto;">
+                    Ferramentas profissionais para criar, vender e escalar seu negócio digital
                 </p>
             </div>
-        </footer>
-    </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px;">
+                <!-- Feature 1 -->
+                <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 40px; transition: all 0.3s; cursor: pointer;" onmouseover="this.style.borderColor='rgba(220,38,38,0.3)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'; this.style.transform='translateY(0)'">
+                    <div style="width: 60px; height: 60px; background: linear-gradient(135deg, rgba(220,38,38,0.2), rgba(220,38,38,0.05)); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; font-size: 28px;">📦</div>
+                    <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 12px; color: #fff;">Produtos Ilimitados</h3>
+                    <p style="color: #71717a; line-height: 1.6; font-size: 0.95rem;">Cadastre quantos produtos quiser. Ebooks, cursos, softwares, templates — sem limitações.</p>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 40px; transition: all 0.3s; cursor: pointer;" onmouseover="this.style.borderColor='rgba(220,38,38,0.3)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'; this.style.transform='translateY(0)'">
+                    <div style="width: 60px; height: 60px; background: linear-gradient(135deg, rgba(220,38,38,0.2), rgba(220,38,38,0.05)); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; font-size: 28px;">🤝</div>
+                    <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 12px; color: #fff;">Sistema de Afiliados</h3>
+                    <p style="color: #71717a; line-height: 1.6; font-size: 0.95rem;">Habilite afiliados com um clique. Eles vendem, você define a comissão. Escale sem esforço.</p>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 40px; transition: all 0.3s; cursor: pointer;" onmouseover="this.style.borderColor='rgba(220,38,38,0.3)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'; this.style.transform='translateY(0)'">
+                    <div style="width: 60px; height: 60px; background: linear-gradient(135deg, rgba(220,38,38,0.2), rgba(220,38,38,0.05)); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; font-size: 28px;">⚡</div>
+                    <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 12px; color: #fff;">Pix Instantâneo</h3>
+                    <p style="color: #71717a; line-height: 1.6; font-size: 0.95rem;">Receba suas vendas na hora via Pix. Sem esperar dias para o dinheiro cair.</p>
+                </div>
+                
+                <!-- Feature 4 -->
+                <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 40px; transition: all 0.3s; cursor: pointer;" onmouseover="this.style.borderColor='rgba(220,38,38,0.3)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'; this.style.transform='translateY(0)'">
+                    <div style="width: 60px; height: 60px; background: linear-gradient(135deg, rgba(220,38,38,0.2), rgba(220,38,38,0.05)); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; font-size: 28px;">🎨</div>
+                    <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 12px; color: #fff;">Vitrine Personalizada</h3>
+                    <p style="color: #71717a; line-height: 1.6; font-size: 0.95rem;">Sua página de vendas profissional. Seu link, sua marca, seus produtos em destaque.</p>
+                </div>
+                
+                <!-- Feature 5 -->
+                <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 40px; transition: all 0.3s; cursor: pointer;" onmouseover="this.style.borderColor='rgba(220,38,38,0.3)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'; this.style.transform='translateY(0)'">
+                    <div style="width: 60px; height: 60px; background: linear-gradient(135deg, rgba(220,38,38,0.2), rgba(220,38,38,0.05)); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; font-size: 28px;">📊</div>
+                    <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 12px; color: #fff;">Analytics em Tempo Real</h3>
+                    <p style="color: #71717a; line-height: 1.6; font-size: 0.95rem;">Acompanhe suas vendas, cliques e conversões. Dados que te ajudam a vender mais.</p>
+                </div>
+                
+                <!-- Feature 6 -->
+                <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 40px; transition: all 0.3s; cursor: pointer;" onmouseover="this.style.borderColor='rgba(220,38,38,0.3)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'; this.style.transform='translateY(0)'">
+                    <div style="width: 60px; height: 60px; background: linear-gradient(135deg, rgba(220,38,38,0.2), rgba(220,38,38,0.05)); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; font-size: 28px;">🔒</div>
+                    <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 12px; color: #fff;">Checkout Seguro</h3>
+                    <p style="color: #71717a; line-height: 1.6; font-size: 0.95rem;">Páginas de pagamento otimizadas para conversão. Cartão, Pix e boleto aceitos.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Professional Pricing Section -->
+    <section id="planos" style="background: linear-gradient(180deg, #000 0%, #0a0a0a 100%); padding: 120px 24px;">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <div style="text-align: center; margin-bottom: 80px;">
+                <span style="display: inline-block; background: rgba(220,38,38,0.1); color: #ff4444; padding: 8px 20px; border-radius: 100px; font-size: 0.875rem; font-weight: 500; margin-bottom: 24px; border: 1px solid rgba(220,38,38,0.2);">💎 Planos Acessíveis</span>
+                <h2 style="font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; margin-bottom: 20px; letter-spacing: -1px;">
+                    Invista uma vez, <span style="background: linear-gradient(135deg, #ff4444, #cc0000); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">venda para sempre</span>
+                </h2>
+                <p style="color: #71717a; font-size: 1.125rem; max-width: 600px; margin: 0 auto;">
+                    Sem mensalidades. Pague uma vez e tenha acesso completo durante todo o período.
+                </p>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; max-width: 1100px; margin: 0 auto;">
+                <!-- Plano Mensal -->
+                <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; padding: 40px; position: relative; transition: all 0.3s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.2)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)'">
+                    <div style="margin-bottom: 32px;">
+                        <span style="font-size: 0.875rem; color: #71717a; text-transform: uppercase; letter-spacing: 1px;">Starter</span>
+                        <h3 style="font-size: 1.5rem; font-weight: 700; margin: 8px 0; color: #fff;">💎 Mensal</h3>
+                        <p style="color: #52525b; font-size: 0.875rem;">180 dias de acesso</p>
+                    </div>
+                    <div style="margin-bottom: 32px;">
+                        <span style="font-size: 4rem; font-weight: 800; color: #fff;">R$200</span>
+                        <span style="color: #71717a; font-size: 1rem;">/único</span>
+                    </div>
+                    <ul style="list-style: none; margin-bottom: 32px; padding: 0;">
+                        <li style="display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.06); color: #a1a1aa;">
+                            <span style="color: #22c55e;">✓</span> Vitrine ilimitada
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.06); color: #a1a1aa;">
+                            <span style="color: #22c55e;">✓</span> Produtos ilimitados
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.06); color: #a1a1aa;">
+                            <span style="color: #22c55e;">✓</span> Links de afiliados
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 12px; padding: 12px 0; color: #a1a1aa;">
+                            <span style="color: #22c55e;">✓</span> Suporte por chat
+                        </li>
+                    </ul>
+                    <button onclick="selecionarPlano('mensal')" style="width: 100%; padding: 16px 24px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; color: #fff; font-weight: 600; font-size: 1rem; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
+                        Começar Agora
+                    </button>
+                </div>
+                
+                <!-- Plano Semestral (Popular) -->
+                <div style="background: linear-gradient(135deg, rgba(220,38,38,0.1), rgba(220,38,38,0.02)); border: 2px solid rgba(220,38,38,0.4); border-radius: 24px; padding: 40px; position: relative; transition: all 0.3s; transform: scale(1.02);">
+                    <div style="position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #dc2626, #991b1b); padding: 8px 20px; border-radius: 100px; font-size: 0.75rem; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 1px;">
+                        ⭐ Mais Popular
+                    </div>
+                    <div style="margin-bottom: 32px;">
+                        <span style="font-size: 0.875rem; color: #ff6b6b; text-transform: uppercase; letter-spacing: 1px;">Pro</span>
+                        <h3 style="font-size: 1.5rem; font-weight: 700; margin: 8px 0; color: #fff;">🚀 Semestral</h3>
+                        <p style="color: #52525b; font-size: 0.875rem;">180 dias + bônus exclusivos</p>
+                    </div>
+                    <div style="margin-bottom: 32px;">
+                        <span style="font-size: 4rem; font-weight: 800; background: linear-gradient(135deg, #ff4444, #ff6b6b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">R$500</span>
+                        <span style="color: #71717a; font-size: 1rem;">/único</span>
+                    </div>
+                    <ul style="list-style: none; margin-bottom: 32px; padding: 0;">
+                        <li style="display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.06); color: #e4e4e7;">
+                            <span style="color: #22c55e;">✓</span> Tudo do Mensal
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.06); color: #e4e4e7;">
+                            <span style="color: #22c55e;">✓</span> Suporte prioritário
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.06); color: #e4e4e7;">
+                            <span style="color: #22c55e;">✓</span> Destaque na vitrine
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 12px; padding: 12px 0; color: #e4e4e7;">
+                            <span style="color: #22c55e;">✓</span> Analytics avançado
+                        </li>
+                    </ul>
+                    <button onclick="selecionarPlano('semestral')" style="width: 100%; padding: 16px 24px; background: linear-gradient(135deg, #dc2626, #991b1b); border: none; border-radius: 12px; color: #fff; font-weight: 600; font-size: 1rem; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 20px rgba(220,38,38,0.3);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 30px rgba(220,38,38,0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(220,38,38,0.3)'">
+                        Começar Agora →
+                    </button>
+                </div>
+                
+                <!-- Plano Anual -->
+                <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; padding: 40px; position: relative; transition: all 0.3s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.2)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)'">
+                    <div style="margin-bottom: 32px;">
+                        <span style="font-size: 0.875rem; color: #71717a; text-transform: uppercase; letter-spacing: 1px;">Enterprise</span>
+                        <h3 style="font-size: 1.5rem; font-weight: 700; margin: 8px 0; color: #fff;">👑 Anual</h3>
+                        <p style="color: #52525b; font-size: 0.875rem;">365 dias completos</p>
+                    </div>
+                    <div style="margin-bottom: 32px;">
+                        <span style="font-size: 4rem; font-weight: 800; color: #fff;">R$1.000</span>
+                        <span style="color: #71717a; font-size: 1rem;">/único</span>
+                    </div>
+                    <ul style="list-style: none; margin-bottom: 32px; padding: 0;">
+                        <li style="display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.06); color: #a1a1aa;">
+                            <span style="color: #22c55e;">✓</span> Tudo do Semestral
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.06); color: #a1a1aa;">
+                            <span style="color: #22c55e;">✓</span> Acesso beta features
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.06); color: #a1a1aa;">
+                            <span style="color: #22c55e;">✓</span> Mentoria exclusiva
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 12px; padding: 12px 0; color: #a1a1aa;">
+                            <span style="color: #22c55e;">✓</span> Selo verificado
+                        </li>
+                    </ul>
+                    <button onclick="selecionarPlano('anual')" style="width: 100%; padding: 16px 24px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; color: #fff; font-weight: 600; font-size: 1rem; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
+                        Começar Agora
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Professional Footer -->
+    <footer style="background: #000; border-top: 1px solid rgba(255,255,255,0.06); padding: 80px 24px 40px;">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 48px; margin-bottom: 60px;">
+                <div style="max-width: 300px;">
+                    <div style="font-size: 1.5rem; font-weight: 800; background: linear-gradient(135deg, #ff4444, #cc0000); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 16px;">🔥 MDA Vendas</div>
+                    <p style="color: #52525b; line-height: 1.6;">A plataforma brasileira mais completa para vender produtos digitais com as menores taxas do mercado.</p>
+                </div>
+                <div>
+                    <h4 style="color: #fff; font-weight: 600; margin-bottom: 16px;">Plataforma</h4>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 10px;"><a href="#recursos" style="color: #71717a; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#71717a'">Recursos</a></li>
+                        <li style="margin-bottom: 10px;"><a href="#planos" style="color: #71717a; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#71717a'">Planos</a></li>
+                        <li style="margin-bottom: 10px;"><a href="/vitrine" style="color: #71717a; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#71717a'">Vitrine</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="color: #fff; font-weight: 600; margin-bottom: 16px;">Legal</h4>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 10px;"><a href="/termos" style="color: #71717a; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#71717a'">Termos de Uso</a></li>
+                        <li style="margin-bottom: 10px;"><a href="/privacidade" style="color: #71717a; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#71717a'">Privacidade</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="color: #fff; font-weight: 600; margin-bottom: 16px;">Contato</h4>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 10px;"><a href="https://wa.me/5511999999999" target="_blank" style="color: #22c55e; text-decoration: none; transition: color 0.2s;">📱 WhatsApp</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div style="border-top: 1px solid rgba(255,255,255,0.06); padding-top: 32px; text-align: center;">
+                <p style="color: #3f3f46; font-size: 0.875rem;">© 2024 MDA Vendas. Todos os direitos reservados. Feito com ❤️ no Brasil.</p>
+            </div>
+        </div>
+    </footer>
 
     <!-- Modal de Login -->
     <div id="modal-login" class="modal-overlay" style="display: none;">
@@ -202,13 +614,13 @@
                 <h2 style="font-size: 1.5rem; font-weight: 600;">Entrar na conta</h2>
                 <button class="modal-close" onclick="fecharModal('login')">×</button>
             </div>
-            
+
             <!-- Login com Google -->
             <button class="btn btn-google" style="width: 100%; margin-bottom: 1rem;" onclick="loginComGoogle()">
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
                 Entrar com Google
             </button>
-            
+
             <div class="divider">
                 <span>ou use email</span>
             </div>
@@ -228,7 +640,8 @@
             </form>
 
             <p style="text-align: center; margin-top: 1.5rem; color: #94a3b8;">
-                Não tem conta? <a href="#" onclick="abrirModal('cadastro'); fecharModal('login');" style="color: #3b82f6;">Criar conta</a>
+                Não tem conta? <a href="#" onclick="abrirModal('cadastro'); fecharModal('login');"
+                    style="color: #3b82f6;">Criar conta</a>
             </p>
         </div>
     </div>
@@ -240,13 +653,13 @@
                 <h2 style="font-size: 1.5rem; font-weight: 600;">Criar conta</h2>
                 <button class="modal-close" onclick="fecharModal('cadastro')">×</button>
             </div>
-            
+
             <!-- Cadastro com Google -->
             <button class="btn btn-google" style="width: 100%; margin-bottom: 1rem;" onclick="loginComGoogle()">
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
                 Cadastrar com Google
             </button>
-            
+
             <div class="divider">
                 <span>ou use email</span>
             </div>
@@ -262,7 +675,8 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">Senha</label>
-                    <input type="password" class="form-input" id="cadastro-senha" required placeholder="Crie uma senha forte" minlength="6">
+                    <input type="password" class="form-input" id="cadastro-senha" required
+                        placeholder="Crie uma senha forte" minlength="6">
                 </div>
                 <button type="submit" class="btn btn-primary" style="width: 100%;">
                     Criar Conta
@@ -270,7 +684,8 @@
             </form>
 
             <p style="text-align: center; margin-top: 1.5rem; color: #94a3b8;">
-                Já tem conta? <a href="#" onclick="abrirModal('login'); fecharModal('cadastro');" style="color: #3b82f6;">Entrar</a>
+                Já tem conta? <a href="#" onclick="abrirModal('login'); fecharModal('cadastro');"
+                    style="color: #3b82f6;">Entrar</a>
             </p>
         </div>
     </div>
@@ -287,17 +702,20 @@
             <div id="pagamento-etapa-1">
                 <div style="text-align: center; margin-bottom: 1.5rem;">
                     <div style="font-size: 1.25rem; font-weight: 600;" id="pagamento-plano-nome">Plano Semestral</div>
-                    <div style="font-size: 2.5rem; font-weight: 800; color: #10b981;" id="pagamento-plano-valor">R$ 500</div>
+                    <div style="font-size: 2.5rem; font-weight: 800; color: #10b981;" id="pagamento-plano-valor">R$ 500
+                    </div>
                 </div>
 
                 <form id="form-pagamento" onsubmit="gerarPix(event)">
                     <div class="form-group">
                         <label class="form-label">CPF</label>
-                        <input type="text" class="form-input" id="pagamento-cpf" required placeholder="000.000.000-00" maxlength="14">
+                        <input type="text" class="form-input" id="pagamento-cpf" required placeholder="000.000.000-00"
+                            maxlength="14">
                     </div>
                     <div class="form-group">
                         <label class="form-label">Telefone</label>
-                        <input type="text" class="form-input" id="pagamento-telefone" placeholder="(00) 00000-0000" maxlength="15">
+                        <input type="text" class="form-input" id="pagamento-telefone" placeholder="(00) 00000-0000"
+                            maxlength="15">
                     </div>
                     <button type="submit" class="btn btn-success" style="width: 100%;">
                         Gerar QR Code PIX
@@ -311,13 +729,13 @@
                     <p style="margin-bottom: 1rem; color: #f59e0b;">
                         ⏰ Expira em: <span id="pix-timer">05:00</span>
                     </p>
-                    
+
                     <div class="qr-container">
                         <img id="pix-qr-code" src="" alt="QR Code PIX">
                     </div>
 
                     <p style="margin: 1rem 0; font-weight: 500;">ou copie o código PIX:</p>
-                    
+
                     <div class="pix-copy" onclick="copiarPix()">
                         <span id="pix-copia-cola">Gerando...</span>
                     </div>
@@ -326,7 +744,8 @@
                         📋 Copiar Código PIX
                     </button>
 
-                    <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(16, 185, 129, 0.1); border-radius: 10px;">
+                    <div
+                        style="margin-top: 1.5rem; padding: 1rem; background: rgba(16, 185, 129, 0.1); border-radius: 10px;">
                         <p style="color: #10b981; font-size: 0.9rem;">
                             ✅ Após o pagamento, seu acesso será liberado automaticamente em até 10 segundos!
                         </p>
@@ -386,18 +805,18 @@
         // =====================================================
         // VERIFICAR AUTENTICAÇÃO AO CARREGAR
         // =====================================================
-        window.onload = async function() {
+        window.onload = async function () {
             if (token) {
                 try {
                     const response = await fetch('/api/auth/me', {
                         headers: { 'Authorization': `Bearer ${token}` }
                     });
                     const data = await response.json();
-                    
+
                     if (data.success) {
                         usuario = data.usuario;
                         localStorage.setItem('usuario', JSON.stringify(usuario));
-                        
+
                         // Se pagou ou é admin, vai para dashboard
                         if (usuario.plano_pago || usuario.isAdmin) {
                             window.location.href = '/dashboard';
@@ -441,7 +860,7 @@
             toast.className = `toast toast-${tipo}`;
             toast.innerHTML = mensagem;
             container.appendChild(toast);
-            
+
             setTimeout(() => toast.remove(), 5000);
         }
 
@@ -462,7 +881,7 @@
         async function loginComGoogle() {
             try {
                 mostrarLoading();
-                
+
                 const provider = new firebase.auth.GoogleAuthProvider();
                 const result = await auth.signInWithPopup(provider);
                 const user = result.user;
@@ -480,17 +899,17 @@
                 });
 
                 const data = await response.json();
-                
+
                 if (data.success) {
                     token = data.token;
                     usuario = data.usuario;
-                    
+
                     localStorage.setItem('token', token);
                     localStorage.setItem('usuario', JSON.stringify(usuario));
-                    
+
                     fecharModal('login');
                     fecharModal('cadastro');
-                    
+
                     mostrarToast('✅ Login realizado com sucesso!', 'success');
 
                     // Se tem plano ou é admin, vai para dashboard
@@ -519,7 +938,7 @@
         // =====================================================
         async function loginComEmail(event) {
             event.preventDefault();
-            
+
             const email = document.getElementById('login-email').value;
             const senha = document.getElementById('login-senha').value;
 
@@ -537,10 +956,10 @@
                 if (data.success) {
                     token = data.token;
                     usuario = data.usuario;
-                    
+
                     localStorage.setItem('token', token);
                     localStorage.setItem('usuario', JSON.stringify(usuario));
-                    
+
                     fecharModal('login');
                     mostrarToast('✅ Login realizado!', 'success');
 
@@ -565,7 +984,7 @@
         // =====================================================
         async function cadastrarComEmail(event) {
             event.preventDefault();
-            
+
             const nome = document.getElementById('cadastro-nome').value;
             const email = document.getElementById('cadastro-email').value;
             const senha = document.getElementById('cadastro-senha').value;
@@ -584,10 +1003,10 @@
                 if (data.success) {
                     token = data.token;
                     usuario = data.usuario;
-                    
+
                     localStorage.setItem('token', token);
                     localStorage.setItem('usuario', JSON.stringify(usuario));
-                    
+
                     fecharModal('cadastro');
                     mostrarToast('✅ Conta criada com sucesso!', 'success');
 
@@ -636,11 +1055,11 @@
             const info = PLANOS_INFO[plano];
             document.getElementById('pagamento-plano-nome').textContent = info.nome;
             document.getElementById('pagamento-plano-valor').textContent = `R$ ${info.valor}`;
-            
+
             document.getElementById('pagamento-etapa-1').style.display = 'block';
             document.getElementById('pagamento-etapa-2').style.display = 'none';
             document.getElementById('pagamento-etapa-3').style.display = 'none';
-            
+
             abrirModal('pagamento');
         }
 
@@ -678,11 +1097,11 @@
 
                 if (data.success) {
                     pagamentoId = data.pagamento_id;
-                    
+
                     // Mostrar QR Code
                     document.getElementById('pix-qr-code').src = `data:image/png;base64,${data.qr_code_base64}`;
                     document.getElementById('pix-copia-cola').textContent = data.pix_copia_cola;
-                    
+
                     document.getElementById('pagamento-etapa-1').style.display = 'none';
                     document.getElementById('pagamento-etapa-2').style.display = 'block';
 
@@ -713,9 +1132,9 @@
             timerInterval = setInterval(() => {
                 const minutos = Math.floor(tempoRestante / 60);
                 const segs = tempoRestante % 60;
-                document.getElementById('pix-timer').textContent = 
+                document.getElementById('pix-timer').textContent =
                     `${String(minutos).padStart(2, '0')}:${String(segs).padStart(2, '0')}`;
-                
+
                 tempoRestante--;
 
                 if (tempoRestante < 0) {
@@ -770,7 +1189,7 @@
         // =====================================================
         // MÁSCARAS DE INPUT
         // =====================================================
-        document.getElementById('pagamento-cpf').addEventListener('input', function(e) {
+        document.getElementById('pagamento-cpf').addEventListener('input', function (e) {
             let value = e.target.value.replace(/\D/g, '');
             value = value.replace(/(\d{3})(\d)/, '$1.$2');
             value = value.replace(/(\d{3})(\d)/, '$1.$2');
@@ -778,7 +1197,7 @@
             e.target.value = value;
         });
 
-        document.getElementById('pagamento-telefone').addEventListener('input', function(e) {
+        document.getElementById('pagamento-telefone').addEventListener('input', function (e) {
             let value = e.target.value.replace(/\D/g, '');
             value = value.replace(/^(\d{2})(\d)/, '($1) $2');
             value = value.replace(/(\d{5})(\d)/, '$1-$2');
@@ -786,4 +1205,5 @@
         });
     </script>
 </body>
+
 </html>

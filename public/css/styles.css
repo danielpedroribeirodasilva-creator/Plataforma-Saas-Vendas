@@ -69,9 +69,10 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;
+    z-index: 0;
     overflow: hidden;
-    background: radial-gradient(ellipse at bottom, #1a0808 0%, #0a0a0a 100%);
+    background: transparent;
+    pointer-events: none;
 }
 
 /* Estrelas com tom vermelho */
